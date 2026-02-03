@@ -4,23 +4,15 @@ Automated, secure WordPress VPS deployment with OpenTofu and cloud-init.
 
 ## What Gets Installed?
 
-After `tofu apply`, cloud-init configures **everything** on first boot:
+After `tofu apply`, cloud-init configures **everything** on first boot.
 
-### Security
-
-- SSH hardening (keys only, no root, no passwords, modern ciphers, 7-day bans)
-- UFW firewall (ports 22, 80, 443)
-- Fail2Ban (brute force protection with email alerts)
-- Automatic security updates
-- Kernel hardening (sysctl, ASLR, tcp_timestamps disabled)
-- AppArmor mandatory access control
-- Auditd system event logging
 
 ### Infrastructure
 
 - Docker with security configuration
 - Traefik reverse proxy with Let's Encrypt
 - WordPress stack (MariaDB + PHP-FPM + Nginx + Redis)
+- Heavy focus on security. See below for details
 
 ## Requirements
 
@@ -116,12 +108,14 @@ dps
 ## What's Secured?
 
 ### Network
+
 - Hetzner + UFW firewall (ports 22, 80, 443 only)
 - Traefik rate limiting (100 req/s, 50 burst)
 - IPv6 disabled (reduces attack surface)
 - Kernel hardening: SYN cookies, IP spoofing/redirects blocked, ARP hardening
 
 ### SSH
+
 - Key-only authentication (ed25519/rsa)
 - Root login disabled, password auth disabled
 - Fail2Ban (7-day bans, email alerts)
@@ -129,6 +123,7 @@ dps
 - 5-minute idle timeout, max 3 sessions
 
 ### Web
+
 - HTTPS with auto-redirect
 - HSTS (1 year, preload)
 - Security headers: XSS, clickjacking, nosniff, permissions policy
@@ -136,14 +131,17 @@ dps
 - WordPress: file editor disabled, XML-RPC blocked, PHP execution blocked in uploads
 
 ### Database
+
 - MariaDB: symbolic links disabled, local file loading disabled, binary logging disabled, max 100 connections
 
 ### Stack Isolation
+
 - WordPress on internal network segment (no direct external access)
 - Docker socket read-only, Traefik config read-only
 - No-new-privileges for all containers
 
 ### System
+
 - Automatic security updates with email alerts
 - Kernel dmesg/kptr restricted, swap hardening
 - AppArmor + Auditd active
