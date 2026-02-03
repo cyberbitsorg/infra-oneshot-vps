@@ -1,11 +1,10 @@
-# Infrastructure as Code - Hetzner VPS
+# Oneshot secured Hetzner VPS
 
 Automated, secure WordPress VPS deployment with OpenTofu and cloud-init.
 
 ## What Gets Installed?
 
 After `tofu apply`, cloud-init configures **everything** on first boot.
-
 
 ### Infrastructure
 
@@ -17,13 +16,13 @@ After `tofu apply`, cloud-init configures **everything** on first boot.
 ## Requirements
 
 - [OpenTofu](https://opentofu.org/docs/intro/install/) >= 1.6
-- Hetzner Cloud account with API token
+- [Hetzner Cloud](https://www.hetzner.com/cloud/) account with API token
 - SSH key pair (ed25519 recommended)
 - Domain name
 
 ## Quick Start
 
-### 1. Generate SSH Key (if needed)
+### 1. Generate SSH Key (if you don't have one already)
 
 ```bash
 ssh-keygen -t ed25519 -C "your-domain" -f ~/.ssh/id_ed25519
@@ -61,7 +60,7 @@ tofu init
 tofu apply
 ```
 
-### 5. Configure DNS (before setup!)
+### 5. Configure DNS
 
 Set these records at your registrar:
 
