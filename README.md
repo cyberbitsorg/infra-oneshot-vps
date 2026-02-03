@@ -48,9 +48,9 @@ vim terraform.tfvars
 Minimum required:
 
 ```hcl
-hcloud_token = "your-api-token"
-admin_email  = "you@example.com"
-domain       = "your-domain.com"
+hcloud_token   = "your-api-token"
+admin_email    = "you@example.com"
+domain         = "your-domain.com"
 admin_username = "yourusername"
 ```
 
