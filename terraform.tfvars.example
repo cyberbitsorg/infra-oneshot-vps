@@ -1,0 +1,45 @@
+# =============================================================================
+# Hetzner Cloud API Token
+# Create at: https://console.hetzner.cloud/ -> Project -> Security -> API Tokens
+# =============================================================================
+
+hcloud_token = "<insert api token>"
+
+# =============================================================================
+# Server Configuration
+# =============================================================================
+
+server_name     = "fsn-web01"
+server_type     = "cx23"          # cx23=2CPU/4GB, cx33=2CPU/8GB, cx43=8CPU/16GB
+server_location = "fsn1"          # fsn1=Falkenstein, nbg1=Nuremberg, hel1=Helsinki
+server_image    = "ubuntu-24.04"  # Deployment is optimized for Ubuntu
+server_backups  = true            # Recommended! But +20% cost
+
+# =============================================================================
+# SSH Configuration
+# =============================================================================
+
+ssh_public_key_path = "~/.ssh/id_ed25519.pub"   # Location/name on VPS
+ssh_key_name        = "<insert key name>"       # Name in Hetzner console
+
+# =============================================================================
+# Admin User
+# =============================================================================
+
+admin_username = "<insert admin name>"          # Linux admin name
+admin_email    = "<insert admin email>"         # Linux admin email
+timezone       = "<insert timezone>"            # E.g. Europe/Amsterdam
+
+# =============================================================================
+# Domain
+# =============================================================================
+
+domain = "<insert domain name>"
+
+# =============================================================================
+# Firewall - Restrict SSH Access (optional)
+# =============================================================================
+# Leave empty for access from all IPs, or specify your home/office IPs:
+
+# allowed_ssh_ips = ["1.2.3.4/32", "5.6.7.8/32"]
+allowed_ssh_ips = []
