@@ -342,6 +342,7 @@ write_files:
               customFrameOptionsValue: "SAMEORIGIN"
               referrerPolicy: "strict-origin-when-cross-origin"
               permissionsPolicy: "camera=(), microphone=(), geolocation=(), payment=()"
+              contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline' *.googleapis.com; img-src 'self' data: https: *.gravatar.com; font-src 'self' *.gstatic.com; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
               customResponseHeaders:
                 X-Powered-By: ""
                 Server: ""
@@ -476,6 +477,7 @@ write_files:
               define('WP_CACHE', true);
           volumes:
             - wordpress_data:/var/www/html
+            - ./php-uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
           networks:
             - wordpress-internal
             - traefik
@@ -486,6 +488,8 @@ write_files:
             retries: 3
           security_opt:
             - no-new-privileges:true
+          extra_hosts:
+            - "${domain}:host-gateway"
 
         nginx:
           image: nginx:1.25-alpine
@@ -516,6 +520,32 @@ write_files:
             - "traefik.http.routers.wordpress.middlewares=security-headers@file,rate-limit@file,compress@file"
             - "traefik.http.services.wordpress.loadbalancer.server.port=80"
 
+        wpcli:
+          image: wordpress:cli
+          container_name: wordpress-wpcli
+          environment:
+            WORDPRESS_DB_HOST: db:3306
+            WORDPRESS_DB_NAME: $${DB_NAME}
+            WORDPRESS_DB_USER: $${DB_USER}
+            WORDPRESS_DB_PASSWORD: $${DB_PASSWORD}
+            WORDPRESS_TABLE_PREFIX: $${WP_TABLE_PREFIX:-wp_}
+            WORDPRESS_CONFIG_EXTRA: |
+              define('WP_REDIS_HOST', 'redis');
+              define('WP_REDIS_PORT', 6379);
+              define('WP_REDIS_DATABASE', 0);
+              define('WP_CACHE', true);
+          volumes:
+            - wordpress_data:/var/www/html
+          networks:
+            - wordpress-internal
+          depends_on:
+            db:
+              condition: service_healthy
+            wordpress:
+              condition: service_healthy
+          profiles:
+            - tools
+
       volumes:
         db_data:
         wordpress_data:
@@ -527,6 +557,17 @@ write_files:
           internal: true
         traefik:
           external: true
+
+  - path: /opt/wordpress/php-uploads.ini
+    permissions: '0644'
+    content: |
+      ; PHP Upload Limits for WordPress Media Library
+      upload_max_filesize = 64M
+      post_max_size = 64M
+      max_file_uploads = 20
+      max_execution_time = 300
+      max_input_time = 300
+      memory_limit = 512M
 
   - path: /opt/wordpress/nginx.conf
     permissions: '0644'
@@ -684,6 +725,18 @@ write_files:
       echo ""
       echo "Starting WordPress..."
       docker compose up -d
+
+      echo ""
+      echo "Configuring WP-Cron..."
+      # Disable WP-Cron and set up system cron for better reliability
+      sleep 5
+      docker compose exec -T wordpress sh -c "echo \"define('DISABLE_WP_CRON', true);\" >> /var/www/html/wp-config.php"
+
+      # Add system cron job
+      if ! crontab -l 2>/dev/null | grep -q "wp-cron"; then
+        (crontab -l 2>/dev/null; echo "*/5 * * * * cd /opt/wordpress && docker compose --profile tools run --rm wpcli wp cron event run --due-now --allow-root > /dev/null 2>&1") | crontab -
+        echo "System cron configured for WP-Cron"
+      fi
 
       echo ""
       echo "=== Done ==="
