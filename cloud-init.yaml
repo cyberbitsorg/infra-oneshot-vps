@@ -342,7 +342,7 @@ write_files:
               customFrameOptionsValue: "SAMEORIGIN"
               referrerPolicy: "strict-origin-when-cross-origin"
               permissionsPolicy: "camera=(), microphone=(), geolocation=(), payment=()"
-              contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline' *.googleapis.com; img-src 'self' data: https: *.gravatar.com; font-src 'self' *.gstatic.com; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+              contentSecurityPolicy: "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; frame-ancestors 'self';"
               customResponseHeaders:
                 X-Powered-By: ""
                 Server: ""

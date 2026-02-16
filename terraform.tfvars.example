@@ -10,7 +10,7 @@ hcloud_token = "<insert api token>"
 # =============================================================================
 
 server_name     = "fsn-web01"
-server_type     = "cx23"          # cx23=2CPU/4GB, cx33=2CPU/8GB, cx43=8CPU/16GB
+server_type     = "cx23"          # cx23=2CPU/4GB, cx33=4CPU/8GB, cx43=8CPU/16GB
 server_location = "fsn1"          # fsn1=Falkenstein, nbg1=Nuremberg, hel1=Helsinki
 server_image    = "ubuntu-24.04"  # Deployment is optimized for Ubuntu
 server_backups  = true            # Recommended! But +20% cost
