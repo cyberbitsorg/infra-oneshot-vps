@@ -17,7 +17,7 @@ After `tofu apply`, cloud-init configures **everything** on first boot.
 
 - [OpenTofu](https://opentofu.org/docs/intro/install/) >= 1.6
 - [Hetzner Cloud](https://www.hetzner.com/cloud/) account with API token
-- SSH key uploaded to Hetzner Cloud (see [infra-hetzner-deploy](https://github.com/cyberbitsorg/infra-hetzner-deploy))
+- SSH key uploaded to Hetzner Cloud (see [infra-hetzner-ssh](https://github.com/cyberbitsorg/infra-hetzner-ssh))
 - Firewall created in Hetzner Cloud (see [infra-hetzner-firewall](https://github.com/cyberbitsorg/infra-hetzner-firewall))
 - Domain name
 

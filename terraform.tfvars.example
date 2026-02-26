@@ -20,7 +20,7 @@ server_backups  = true            # Recommended! But +20% cost
 # =============================================================================
 
 # SSH key must already exist in Hetzner Cloud.
-# Create it first using https://github.com/cyberbitsorg/infra-hetzner-deploy
+# Create it first using https://github.com/cyberbitsorg/infra-hetzner-ssh
 # then reference the key name here.
 
 ssh_public_key_path = "~/.ssh/id_ed25519.pub"
