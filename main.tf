@@ -19,7 +19,7 @@ data "hcloud_firewall" "default" {
 # =============================================================================
 
 resource "random_password" "admin_password" {
-  length  = 20
+  length  = 32
   special = false
   upper   = true
   lower   = true

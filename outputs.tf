@@ -9,7 +9,7 @@ output "login_credentials" {
     Initial Password: ${random_password.admin_password.result}
 
   EOT
-  sensitive = true
+  sensitive   = true
 }
 
 # =============================================================================

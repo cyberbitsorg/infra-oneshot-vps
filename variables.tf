@@ -114,3 +114,21 @@ variable "environment" {
   type        = string
   default     = "production"
 }
+
+variable "managed_by" {
+  description = "Name of the infrastructure management tool"
+  type        = string
+  default     = "opentofu"
+}
+
+variable "cidr_ipv4_all" {
+  description = "CIDR block representing all IPv4 addresses"
+  type        = string
+  default     = "0.0.0.0/0"
+}
+
+variable "cidr_ipv6_all" {
+  description = "CIDR block representing all IPv6 addresses"
+  type        = string
+  default     = "::/0"
+}
