@@ -23,20 +23,20 @@ After `tofu apply`, cloud-init configures **everything** on first boot.
 
 ## Quick Start
 
-### 1. Create Hetzner API Token
+### 1. Create Hetzner API token
 
 1. Go to [Hetzner Cloud Console](https://console.hetzner.cloud/)
 2. Select or create your project
 3. Go to **Security** → **API Tokens**
 4. Generate token with Read & Write permissions
 
-### 2. Upload SSH Key to Hetzner
+### 2. Upload SSH key to Hetzner
 
 This project requires the SSH key to already exist in Hetzner Cloud.
 
 Use [infra-hetzner-deploy](https://github.com/cyberbitsorg/infra-hetzner-deploy) to manage your SSH keys.
 
-### 3. Create Firewall
+### 3. Create firewall
 
 This project requires the firewall to already exist in Hetzner Cloud.
 
@@ -81,7 +81,7 @@ Wait for DNS propagation.
 
 Follow the rest of the instructions.
 
-## Useful Commands
+## Useful commands
 
 ```bash
 # Validate
@@ -100,7 +100,7 @@ tofu output
 tofu destroy
 ```
 
-## After SSH Login
+## After SSH login
 
 ```bash
 # Check security status
@@ -139,7 +139,7 @@ dps
 
 - MariaDB: symbolic links disabled, local file loading disabled, binary logging disabled, max 100 connections
 
-### Stack Isolation
+### Stack isolation
 
 - WordPress on internal network segment (no direct external access)
 - Docker socket read-only, Traefik config read-only
