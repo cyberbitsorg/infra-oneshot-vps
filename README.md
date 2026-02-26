@@ -2,7 +2,7 @@
 
 Automated, secure WordPress VPS deployment with OpenTofu and cloud-init.
 
-## What Gets Installed?
+## What gets installed
 
 After `tofu apply`, cloud-init configures **everything** on first boot.
 
@@ -17,27 +17,32 @@ After `tofu apply`, cloud-init configures **everything** on first boot.
 
 - [OpenTofu](https://opentofu.org/docs/intro/install/) >= 1.6
 - [Hetzner Cloud](https://www.hetzner.com/cloud/) account with API token
-- SSH key pair (ed25519 recommended)
+- SSH key uploaded to Hetzner Cloud (see [infra-hetzner-deploy](https://github.com/cyberbitsorg/infra-hetzner-deploy))
+- Firewall created in Hetzner Cloud (see [infra-hetzner-firewall](https://github.com/cyberbitsorg/infra-hetzner-firewall))
 - Domain name
 
 ## Quick Start
 
-### 1. Generate SSH Key (if you don't have one already)
-
-```bash
-ssh-keygen -t ed25519 -C "your-domain" -f ~/.ssh/id_ed25519
-```
-
-Always use a password on your key!
-
-### 2. Create Hetzner API Token
+### 1. Create Hetzner API Token
 
 1. Go to [Hetzner Cloud Console](https://console.hetzner.cloud/)
 2. Select or create your project
 3. Go to **Security** → **API Tokens**
 4. Generate token with Read & Write permissions
 
-### 3. Configure
+### 2. Upload SSH Key to Hetzner
+
+This project requires the SSH key to already exist in Hetzner Cloud.
+
+Use [infra-hetzner-deploy](https://github.com/cyberbitsorg/infra-hetzner-deploy) to manage your SSH keys.
+
+### 3. Create Firewall
+
+This project requires the firewall to already exist in Hetzner Cloud.
+
+Use [infra-hetzner-firewall](https://github.com/cyberbitsorg/infra-hetzner-firewall) to manage your firewalls.
+
+### 4. Configure
 
 ```bash
 cp terraform.tfvars.example terraform.tfvars
@@ -57,6 +62,7 @@ admin_username = "yourusername"
 
 ```bash
 tofu init
+tofu plan
 tofu apply
 ```
 

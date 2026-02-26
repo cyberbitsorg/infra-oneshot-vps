@@ -1,42 +1,17 @@
 # =============================================================================
-# SSH Key
+# SSH Key (must exist in Hetzner)
 # =============================================================================
 
-resource "hcloud_ssh_key" "default" {
-  name       = var.ssh_key_name
-  public_key = file(pathexpand(var.ssh_public_key_path))
+data "hcloud_ssh_key" "default" {
+  name = var.ssh_key_name
 }
 
 # =============================================================================
-# Firewall
+# Firewall (must exist in Hetzner - create in infra-hetzner-firewall first)
 # =============================================================================
 
-resource "hcloud_firewall" "vps" {
-  name = "${var.server_name}-firewall"
-
-  # Inbound rules (SSH, HTTP, HTTPS, ICMP)
-  dynamic "rule" {
-    for_each = local.firewall_inbound_rules
-    content {
-      description = rule.value.description
-      direction   = "in"
-      protocol    = rule.value.protocol
-      port        = rule.value.port
-      source_ips  = rule.value.source_ips
-    }
-  }
-
-  # Outbound rules
-  dynamic "rule" {
-    for_each = local.firewall_outbound_rules
-    content {
-      description     = rule.value.description
-      direction       = "out"
-      protocol        = rule.value.protocol
-      port            = rule.value.port
-      destination_ips = rule.value.destination_ips
-    }
-  }
+data "hcloud_firewall" "default" {
+  name = var.firewall_name
 }
 
 # =============================================================================
@@ -62,15 +37,16 @@ resource "hcloud_server" "vps" {
   image       = var.server_image
   backups     = var.server_backups
 
-  ssh_keys     = [hcloud_ssh_key.default.id]
-  firewall_ids = [hcloud_firewall.vps.id]
+  ssh_keys     = [data.hcloud_ssh_key.default.id]
+  firewall_ids = [data.hcloud_firewall.default.id]
 
   user_data = templatefile("${path.module}/cloud-init.yaml", {
+    server_name    = var.server_name
     admin_username = var.admin_username
     admin_email    = var.admin_email
     ssh_public_key = file(pathexpand(var.ssh_public_key_path))
     timezone       = var.timezone
-    domain         = var.domain
+    domain         = local.full_domain
     admin_password = random_password.admin_password.result
   })
 
@@ -93,5 +69,5 @@ resource "hcloud_server" "vps" {
 resource "hcloud_rdns" "ipv4" {
   server_id  = hcloud_server.vps.id
   ip_address = hcloud_server.vps.ipv4_address
-  dns_ptr    = var.domain
+  dns_ptr    = local.full_domain
 }

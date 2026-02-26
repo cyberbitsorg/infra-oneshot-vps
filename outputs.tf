@@ -22,10 +22,10 @@ output "dns_records" {
 
     Configure these DNS records at your registrar:
 
-    Type  Name               Value
-    ----  ----               -----
-    A     ${var.domain}      ${hcloud_server.vps.ipv4_address}
-    A     www.${var.domain}  ${hcloud_server.vps.ipv4_address}
+    Type  Name                   Value
+    ----  ----                   -----
+    A     ${local.full_domain}   ${hcloud_server.vps.ipv4_address}
+    A     www.${var.domain}      ${hcloud_server.vps.ipv4_address}
 
   EOT
 }

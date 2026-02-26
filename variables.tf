@@ -53,9 +53,9 @@ variable "ssh_public_key_path" {
 }
 
 variable "ssh_key_name" {
-  description = "Name for the SSH key in Hetzner"
+  description = "Name of existing SSH key in Hetzner Cloud"
   type        = string
-  default     = "vps-deploy-key"
+  default     = "main-deploy-key"
 }
 
 # =============================================================================
@@ -84,19 +84,25 @@ variable "timezone" {
 # =============================================================================
 
 variable "domain" {
-  description = "Primary domain name"
+  description = "Primary domain name (e.g., example.com)"
   type        = string
   default     = "example.com"
 }
 
+variable "subdomain" {
+  description = "Subdomain prefix (e.g., 'blog' for blog.example.com). Leave empty for root domain."
+  type        = string
+  default     = ""
+}
+
 # =============================================================================
-# Firewall Configuration
+# Firewall Configuration (managed in infra-hetzner-firewall)
 # =============================================================================
 
-variable "allowed_ssh_ips" {
-  description = "IP addresses allowed SSH access (CIDR notation). Empty = all IPs"
-  type        = list(string)
-  default     = []
+variable "firewall_name" {
+  description = "Name of existing firewall in Hetzner Cloud (create in infra-hetzner-firewall first)"
+  type        = string
+  default     = "main-web-firewall"
 }
 
 # =============================================================================

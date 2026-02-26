@@ -14,55 +14,6 @@ locals {
     domain      = var.domain
   }
 
-  # Firewall Rules
-  firewall_inbound_rules = [
-    {
-      description = length(var.allowed_ssh_ips) > 0 ? "SSH (restricted)" : "SSH"
-      protocol    = "tcp"
-      port        = "22"
-      source_ips  = local.ssh_source_ips
-    },
-    {
-      description = "HTTP"
-      protocol    = "tcp"
-      port        = "80"
-      source_ips  = local.cidr_all
-    },
-    {
-      description = "HTTPS"
-      protocol    = "tcp"
-      port        = "443"
-      source_ips  = local.cidr_all
-    },
-    {
-      description = "ICMP (ping)"
-      protocol    = "icmp"
-      port        = null
-      source_ips  = local.cidr_all
-    }
-  ]
-
-  firewall_outbound_rules = [
-    {
-      description     = "Outbound TCP"
-      protocol        = "tcp"
-      port            = "any"
-      destination_ips = local.cidr_all
-    },
-    {
-      description     = "Outbound UDP"
-      protocol        = "udp"
-      port            = "any"
-      destination_ips = local.cidr_all
-    },
-    {
-      description     = "Outbound ICMP"
-      protocol        = "icmp"
-      port            = null
-      destination_ips = local.cidr_all
-    }
-  ]
-
-  # SSH source IPs: use allowed_ssh_ips if set, otherwise allow all
-  ssh_source_ips = length(var.allowed_ssh_ips) > 0 ? var.allowed_ssh_ips : local.cidr_all
+  # Full domain: subdomain.domain.com or just domain.com
+  full_domain = var.subdomain != "" ? "${var.subdomain}.${var.domain}" : var.domain
 }

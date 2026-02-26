@@ -19,8 +19,12 @@ server_backups  = true            # Recommended! But +20% cost
 # SSH Configuration
 # =============================================================================
 
-ssh_public_key_path = "~/.ssh/id_ed25519.pub"   # Location/name on VPS
-ssh_key_name        = "<insert key name>"       # Name in Hetzner console
+# SSH key must already exist in Hetzner Cloud.
+# Create it first using https://github.com/cyberbitsorg/infra-hetzner-deploy
+# then reference the key name here.
+
+ssh_public_key_path = "~/.ssh/id_ed25519.pub"
+ssh_key_name        = "main-deploy-key"
 
 # =============================================================================
 # Admin User
@@ -34,12 +38,15 @@ timezone       = "<insert timezone>"            # E.g. Europe/Amsterdam
 # Domain
 # =============================================================================
 
-domain = "<insert domain name>"
+# subdomain (blog.example.com) if optional. Leave empty for the root domain (example.com)
+domain    = "<insert domain name>"      # E.g. cyberbits.org
+subdomain = "<insert subdomain name>"   # E.g. www (not www.cyberbits.org)
 
 # =============================================================================
-# Firewall - Restrict SSH Access (optional)
+# Firewall Configuration
 # =============================================================================
-# Leave empty for access from all IPs, or specify your home/office IPs:
+# Firewall must already exist in Hetzner Cloud.
+# Create it first using https://github.com/cyberbitsorg/infra-hetzner-firewall
+# then reference the firewall name here.
 
-# allowed_ssh_ips = ["1.2.3.4/32", "5.6.7.8/32"]
-allowed_ssh_ips = []
+firewall_name = "main-web-firewall"
